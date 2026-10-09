@@ -47,8 +47,9 @@ def load_movies(db_path=DB_PATH):
     with sqlite3.connect(db_path) as conn:
         df = pd.read_sql_query(QUERY, conn)
 
-    df = df.drop_duplicates(subset="title").reset_index(drop=True)
-    df["overview"] = df["overview"].fillna("")
+        df = df.drop_duplicates(subset="title").reset_index(drop=True)
+        text_cols = ["overview", "genres", "keywords", "cast_names", "directors"]
+        df[text_cols] = df[text_cols].fillna("")
 
     # Repeating a part makes it count for more than single plot words.
     # The numbers come from WEIGHTS at the top of this file.
